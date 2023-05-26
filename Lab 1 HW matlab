@@ -1,0 +1,28 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+J1 = 5.8198*10.^-6;  % Moment of Inertia of the first mass(kg m^2)
+J2 = J1; % Moment of Inertia of the second mass(kg m^2)
+k = 0.2656; % Torsional damping of the shaft () 
+d = 3.125*10.^-5; % Torsional damping of the shaft (Nm/rad)
+Km = 4.4*10.^-2; % Motor Constant (Nm/A)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Differntial equations (Question 1)
+syms theta1 theta2 theta1dot theta2dot theta1ddot theta2ddot im
+a1 = J1;
+a2 = J2;
+b1 = d;
+b2 = d;
+c1 = k;
+c2 = k;
+m1 = Km;
+m2 = 0;
+expression_1 = a1*theta1ddot+b1*theta1dot+c1*theta1==b2*theta2dot+c2*theta2+m1*im;
+expression_2 = a2*theta2ddot+b2*theta2dot+c2*theta2==b1*theta1dot+c1*theta1+m2*im;
+% Laplace expressions (Question 2)
+s = tf('s')
+G12 = (d*s+k)/(J1*s^2+d*s+k);
+G21 = (d*s+k)/(J2*s^2+d*s+k);
+Gi1 = (Km)/(J1*s^2+d*s+k);
+Gi2 = 0;
+% Transfer function (Questions 3 and 4)
+TF2i = (Km*(d*s+k))/(J1*J2*s^4+d*s^3*(J1+J2)+k*s^2*(J1+J2)); % Transfer function from i to theta 2
+TF21 = (d*s+k)/(J2*s^2+d*s+k); % Transfer function from theta 1 to theta 2
